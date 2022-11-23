@@ -1,4 +1,5 @@
 import './style.css';
+// import PeopleList from './components/PeopleList';
 //</script><script type="text/babel">
 
 const { useState, useEffect } = React;
@@ -55,13 +56,12 @@ const reducer = (state = initialState, action) => {
 
 // Redux store
 const store = createStore(reducer);
-
 // actions
 const actions = (() => {
-  const addPerson = (person) => {
+  const addPerson = (name, age, location, phone) => {
     return {
       type: constants.addPerson.ADD_PERSON,
-      payload: person,
+      payload: { name: name, age: age, location: location, phone: phone },
     };
   };
   return { addPerson };
@@ -82,35 +82,6 @@ const AddPersonForm = () => {
   const dispatch = useDispatch();
   const contacts = useSelector((state) => state.contacts);
 
-  const [person, setPerson] = useState('');
-
-  const handleChange = (e) => {
-    setPerson(e.target.value);
-  };
-
-  const handleSubmit = (e) => {
-    if (person !== '') {
-      dispatch(actions.addPerson(person));
-      setPerson('');
-    }
-    e.preventDefault();
-  };
-
-  return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Add new contact"
-        onChange={handleChange}
-        value={person}
-      />
-      <button type="submit">Add</button>
-    </form>
-  );
-};
-
-// Adding Person Data
-function AddPersonForm2(props) {
   const [name, setName] = useState('');
   const [age, setAge] = useState('');
   const [location, setLocation] = useState('');
@@ -129,9 +100,10 @@ function AddPersonForm2(props) {
     setPhone(phone.target.value);
   }
 
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     if (name !== '' && age != '' && location != '' && phone != '') {
-      props.handleSubmit(name, age, location, phone);
+      console.log('NAME: ', name);
+      dispatch(actions.addPerson(name, age, location, phone));
       setName('');
       setAge('');
       setLocation('');
@@ -140,7 +112,8 @@ function AddPersonForm2(props) {
       alert("You can't submit a empty field(s)!");
     }
     e.preventDefault();
-  }
+  };
+
   function Reset(e) {
     setName('');
     setAge('');
@@ -148,10 +121,14 @@ function AddPersonForm2(props) {
     setPhone('');
     e.preventDefault();
   }
+
   return (
     <form className="Create">
       {/* onSubmit={handleSubmit} */}
-      <label><b>Create</b></label><br/>
+      <label>
+        <b>Create</b>
+      </label>
+      <br />
       <input
         type="text"
         placeholder="Add contact name"
@@ -188,7 +165,7 @@ function AddPersonForm2(props) {
       </button>
     </form>
   );
-}
+};
 
 // PeopleList component
 const PeopleList = () => {

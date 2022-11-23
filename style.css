@@ -1,5 +1,12 @@
-h1, p {
+body {
+  border: 2px solid black;
+  border-radius: 10px;
+  background-color: rgba(61, 120, 175, 0.411);
+}
+h1,
+p {
   font-family: Lato;
+  text-align: center;
 }
 ul {
   padding: 0;
@@ -8,10 +15,59 @@ ul {
 li {
   list-style-type: none;
   padding: 10px;
-  margin: 10px;
+  margin: 5px auto;
   background-color: rgba(61, 120, 175, 0.411);
   border-radius: 10px;
+  border: 1px solid black;
+  width: 90%;
 }
 form {
-  margin: 10px;
+  padding: 10px;
+  margin: 0 auto;
+  margin-bottom: 5px;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-color: rgba(170, 170, 170, 0.411);
+  width: 90%;
+}
+label {
+  margin: 5px;
+}
+input {
+  margin: 5px;
+  border: 2px solid rgba(59, 53, 53, 0.411);
+  border-radius: 5px;
+  width: 70%;
+}
+.contact-list {
+  background-color: rgba(61, 120, 175, 0.411);
+  border: 1px solid black;
+  border-radius: 10px;
+  display: block;
+  margin: 10px auto;
+  width: 95%;
+}
+#allContacts {
+  margin-left: 2%;
+}
+
+.changeContacts {
+  background-color: rgba(255, 255, 255, 0.411);
+  border: 1px solid rgba(255, 255, 255, 0.411);
+  color: rgb(32, 29, 29);
+  width: 50%;
+}
+button {
+  border-radius: 5px;
+  margin-left: 5px;
+}
+.close {
+  position: relative;
+  bottom: 90px;
+  float: right;
+  color: red;
+  font-size: 15px;
+}
+.no_contacts {
+  text-align: center;
 }
