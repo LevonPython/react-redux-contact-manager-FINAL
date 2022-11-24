@@ -208,6 +208,7 @@ const PeopleList = () => {
   function Change(e, index, type) {
     console.log('e', e.target.value);
     contacts[index][type] = e.target.value;
+    const dispatch = useDispatch();
     console.log(':::', contacts[index][type]);
   }
 
