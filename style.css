@@ -61,12 +61,10 @@ button {
   border-radius: 5px;
   margin-left: 5px;
 }
-.close {
+.crossSign {
+  display: inline-block;
   position: relative;
-  bottom: 90px;
-  float: right;
-  color: red;
-  font-size: 15px;
+  transform: translateX(+100%);
 }
 .no_contacts {
   text-align: center;

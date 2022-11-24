@@ -12,9 +12,10 @@ const { createStore } = Redux;
 
 // Constants for action types
 const constants = {
-  // constants for addPerson component
-  addPerson: {
+  // constants for Person component
+  Person: {
     ADD_PERSON: 'ADD_PERSON',
+    DELETE_PERSON: 'DELETE_PERSON',
   },
 };
 
@@ -47,8 +48,14 @@ const initialState = {
 // reducer
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case constants.addPerson.ADD_PERSON:
+    case constants.Person.ADD_PERSON:
       return { ...state, contacts: [...state.contacts, action.payload] };
+
+    case constants.Person.DELETE_PERSON:
+      const array = [...state.contacts];
+      const indexOfDelete = action.payload;
+      array.splice(indexOfDelete, 1);
+      return { ...state, contacts: array };
     default:
       return state;
   }
@@ -60,11 +67,17 @@ const store = createStore(reducer);
 const actions = (() => {
   const addPerson = (name, age, location, phone) => {
     return {
-      type: constants.addPerson.ADD_PERSON,
+      type: constants.Person.ADD_PERSON,
       payload: { name: name, age: age, location: location, phone: phone },
     };
   };
-  return { addPerson };
+  const deletePerson = (index) => {
+    return {
+      type: constants.Person.DELETE_PERSON,
+      payload: index,
+    };
+  };
+  return { addPerson, deletePerson };
 })();
 
 // Main App component
@@ -102,7 +115,6 @@ const AddPersonForm = () => {
 
   const handleSubmit = (e) => {
     if (name !== '' && age != '' && location != '' && phone != '') {
-      console.log('NAME: ', name);
       dispatch(actions.addPerson(name, age, location, phone));
       setName('');
       setAge('');
@@ -167,6 +179,19 @@ const AddPersonForm = () => {
   );
 };
 
+// Delete component
+const Delete = ({ index }) => {
+  const dispatch = useDispatch();
+  const onDelete = () => {
+    dispatch(actions.deletePerson(index));
+  };
+  return (
+    <button className="closed" onClick={onDelete}>
+      &#10006;
+    </button>
+  );
+};
+
 // PeopleList component
 const PeopleList = () => {
   const contacts = useSelector((state) => state.contacts);
@@ -180,6 +205,9 @@ const PeopleList = () => {
           className="changeContacts"
           // onChange={(e) => handleChange(e, index, 'name')}
         />
+        <div className="crossSign">
+          <Delete index={index} />
+        </div>
         <br />
         <span>
           <b>Age:</b>
@@ -207,12 +235,6 @@ const PeopleList = () => {
             // onChange={(e) => handleChange(e, index, 'phone')}
           />
         </span>
-        <button
-          className="close"
-          // onClick={() => handleDeleting(index)}
-        >
-          <b>&#10006;</b>
-        </button>
       </li>
     ));
     return (
