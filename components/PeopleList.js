@@ -1,8 +1,16 @@
-// import React from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 
-// PeopleList component
+/// PeopleList component
 const PeopleList = () => {
+  // Change component
+  function Change(e, index, type) {
+    console.log('e', e.target.value);
+    contacts[index][type] = e.target.value;
+    const dispatch = useDispatch();
+    console.log(':::', contacts[index][type]);
+  }
+
   const contacts = useSelector((state) => state.contacts);
   console.log('DATA: ', contacts);
   if (contacts.length > 0) {
@@ -12,8 +20,11 @@ const PeopleList = () => {
         <input
           value={val['name']}
           className="changeContacts"
-          // onChange={(e) => handleChange(e, index, 'name')}
+          onChange={(e) => Change(e, index, 'name')}
         />
+        <div className="crossSign">
+          <Delete index={index} />
+        </div>
         <br />
         <span>
           <b>Age:</b>
@@ -41,12 +52,6 @@ const PeopleList = () => {
             // onChange={(e) => handleChange(e, index, 'phone')}
           />
         </span>
-        <button
-          className="close"
-          // onClick={() => handleDeleting(index)}
-        >
-          <b>&#10006;</b>
-        </button>
       </li>
     ));
     return (
@@ -68,4 +73,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(null, mapStateToProps)(PeopleList);
+export default connect(mapStateToProps)(PeopleList);

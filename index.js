@@ -1,4 +1,5 @@
 import './style.css';
+import PeopleList from './components/PeopleList';
 // import PeopleList from './components/PeopleList';
 //</script><script type="text/babel">
 
