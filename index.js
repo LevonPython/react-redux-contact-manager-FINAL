@@ -16,6 +16,7 @@ const constants = {
   Person: {
     ADD_PERSON: 'ADD_PERSON',
     DELETE_PERSON: 'DELETE_PERSON',
+    CHANGE_PERSON: 'CHANGE_PERSON',
   },
 };
 
@@ -44,7 +45,6 @@ const initialState = {
     },
   ],
 };
-
 // reducer
 const reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -56,6 +56,11 @@ const reducer = (state = initialState, action) => {
       const indexOfDelete = action.payload;
       array.splice(indexOfDelete, 1);
       return { ...state, contacts: array };
+    case constants.Person.CHANGE_PERSON:
+    // const array = [...state.contacts];
+    // const indexOfDelete = action.payload;
+    // array.splice(indexOfDelete, 1);
+    // return { ...state, contacts: array };
     default:
       return state;
   }
@@ -77,7 +82,13 @@ const actions = (() => {
       payload: index,
     };
   };
-  return { addPerson, deletePerson };
+  const changePerson = (e, index, type) => {
+    return {
+      type: constants.Person.CHANGE_PERSON,
+      payload: { e, index, type },
+    };
+  };
+  return { addPerson, deletePerson, changePerson };
 })();
 
 // Main App component
@@ -100,8 +111,8 @@ const AddPersonForm = () => {
   const [location, setLocation] = useState('');
   const [phone, setPhone] = useState('');
 
-  function handleChangeName(name) {
-    setName(name.target.value);
+  function handleChangeName(e) {
+    setName(e.target.value);
   }
   function handleChangeAge(age) {
     setAge(age.target.value);
@@ -178,7 +189,6 @@ const AddPersonForm = () => {
     </form>
   );
 };
-
 // Delete component
 const Delete = ({ index }) => {
   const dispatch = useDispatch();
@@ -194,6 +204,13 @@ const Delete = ({ index }) => {
 
 // PeopleList component
 const PeopleList = () => {
+  // Change component
+  function Change(e, index, type) {
+    console.log('e', e.target.value);
+    contacts[index][type] = e.target.value;
+    console.log(':::', contacts[index][type]);
+  }
+
   const contacts = useSelector((state) => state.contacts);
   console.log('DATA: ', contacts);
   if (contacts.length > 0) {
@@ -203,7 +220,7 @@ const PeopleList = () => {
         <input
           value={val['name']}
           className="changeContacts"
-          // onChange={(e) => handleChange(e, index, 'name')}
+          onChange={(e) => Change(e, index, 'name')}
         />
         <div className="crossSign">
           <Delete index={index} />
