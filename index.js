@@ -53,11 +53,14 @@ const reducer = (state = initialState, action) => {
       return { ...state, contacts: [...state.contacts, action.payload] };
 
     case constants.Person.DELETE_PERSON:
+      console.log('DELETE_PERSON here');
       const array = [...state.contacts];
       const indexOfDelete = action.payload;
       array.splice(indexOfDelete, 1);
       return { ...state, contacts: array };
+
     case constants.Person.CHANGE_PERSON:
+      console.log('action.payload: ', action.payload);
     // const array = [...state.contacts];
     // const indexOfDelete = action.payload;
     // array.splice(indexOfDelete, 1);
@@ -78,15 +81,17 @@ const actions = (() => {
     };
   };
   const deletePerson = (index) => {
+    console.log('index:', index);
     return {
       type: constants.Person.DELETE_PERSON,
       payload: index,
     };
   };
   const changePerson = (e, index, type) => {
+    console.log('index, type', index, type);
     return {
       type: constants.Person.CHANGE_PERSON,
-      payload: { e, index, type },
+      payload: { e: e, index: index, type: type },
     };
   };
   return { addPerson, deletePerson, changePerson };
@@ -203,70 +208,80 @@ const Delete = ({ index }) => {
   );
 };
 
-// PeopleList component
-const PeopleList = () => {
-  // Change component
-  function Change(e, index, type) {
-    console.log('e', e.target.value);
-    contacts[index][type] = e.target.value;
-    const dispatch = useDispatch();
-    console.log(':::', contacts[index][type]);
-  }
+// Change component
+function Change(e, index, type) {
+  console.log('e', e.target.value);
+  // contacts[index][type] = e.target.value;
+  // console.log(useDispatch);
+  const dispatch = useDispatch();
+  const onChange = () => {
+    dispatch(actions.deletePerson(index));
+  };
 
-  const contacts = useSelector((state) => state.contacts);
-  console.log('DATA: ', contacts);
-  if (contacts.length > 0) {
-    const listItems = contacts.map((val, index) => (
-      <li key={index} id={index}>
-        <b>Name:</b>
-        <input
-          value={val['name']}
-          className="changeContacts"
-          onChange={(e) => Change(e, index, 'name')}
-        />
-        <div className="crossSign">
-          <Delete index={index} />
-        </div>
-        <br />
-        <span>
-          <b>Age:</b>
-          <input
-            value={val['age']}
-            className="changeContacts"
-            // onChange={(e) => handleChange(e, index, 'age')}
-          />
-        </span>
-        <br />
-        <span>
-          <b>Location:</b>{' '}
-          <input
-            value={val['location']}
-            className="changeContacts"
-            // onChange={(e) => handleChange(e, index, 'location')}
-          />
-        </span>
-        <br />
-        <span>
-          <b>Phone:</b>{' '}
-          <input
-            value={val['phone']}
-            className="changeContacts"
-            // onChange={(e) => handleChange(e, index, 'phone')}
-          />
-        </span>
-      </li>
-    ));
-    return (
-      <container className="contact-list">
-        <span id="allContacts">
-          <b>All Contacts</b>
-        </span>
-        <ul>{listItems}</ul>
-      </container>
-    );
-  } else {
-    return <ul className="no_contacts">No Contacts found</ul>;
-  }
-};
+  return (
+    <button className="closed" onClick={onDelete}>
+      &#10006;
+    </button>
+  ); 
+}
+
+// // PeopleList component
+// const PeopleList = () => {
+//   const contacts = useSelector((state) => state.contacts);
+//   console.log('DATA: ', contacts);
+//   if (contacts.length > 0) {
+//     const listItems = contacts.map((val, index) => (
+//       <li key={index} id={index}>
+//         <b>Name:</b>
+//         <input
+//           value={val['name']}
+//           className="changeContacts"
+//           onChange={(e) => Change(e, index, 'name')}
+//         />
+       
+//         <div className="crossSign">
+//           <Delete index={index} />
+//         </div>
+//         <br />
+//         <span>
+//           <b>Age:</b>
+//           <input
+//             value={val['age']}
+//             className="changeContacts"
+//             // onChange={(e) => handleChange(e, index, 'age')}
+//           />
+//         </span>
+//         <br />
+//         <span>
+//           <b>Location:</b>{' '}
+//           <input
+//             value={val['location']}
+//             className="changeContacts"
+//             // onChange={(e) => handleChange(e, index, 'location')}
+//           />
+//         </span>
+//         <br />
+//         <span>
+//           <b>Phone:</b>{' '}
+//           <input
+//             value={val['phone']}
+//             className="changeContacts"
+//             // onChange={(e) => handleChange(e, index, 'phone')}
+//           />
+//         </span>
+//       </li>
+//     ));
+//     return (
+//       <container className="contact-list">
+//         <span id="allContacts">
+//           <b>All Contacts</b>
+//         </span>
+//         <ul>{listItems}</ul>
+//       </container>
+//     );
+//   } else {
+//     return <ul className="no_contacts">No Contacts found</ul>;
+//   }
+// };
 
 ReactDOM.render(<App />, document.getElementById('root'));

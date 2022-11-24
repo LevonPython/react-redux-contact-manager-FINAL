@@ -1,16 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-/// PeopleList component
+// PeopleList component
 const PeopleList = () => {
-  // Change component
-  function Change(e, index, type) {
-    console.log('e', e.target.value);
-    contacts[index][type] = e.target.value;
-    const dispatch = useDispatch();
-    console.log(':::', contacts[index][type]);
-  }
-
   const contacts = useSelector((state) => state.contacts);
   console.log('DATA: ', contacts);
   if (contacts.length > 0) {
@@ -22,6 +14,7 @@ const PeopleList = () => {
           className="changeContacts"
           onChange={(e) => Change(e, index, 'name')}
         />
+
         <div className="crossSign">
           <Delete index={index} />
         </div>
@@ -67,9 +60,9 @@ const PeopleList = () => {
   }
 };
 
-function mapStateToProps(state) {
+function mapStateToProps(initialState) {
   return {
-    contacts: state.contacts,
+    contacts: initialState.contacts,
   };
 }
 
